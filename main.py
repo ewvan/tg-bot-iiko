@@ -1,4 +1,3 @@
-import asyncio
 import telegram
 from telegram.ext import Application,CommandHandler,Updater
 import dotenv
@@ -15,11 +14,14 @@ async def start_callback(update, context):
 
 
 async def revenue_callback(update, context):
-    content = context.args[-1].strip()
-    app = revenue.Revenue(content)
-    await update.message.reply_text(f"{app.return_revenue()}")
-
-
+    if len(context.args) > 0:
+        content = (context.args[-1].strip()).capitalize()
+        app = revenue.Revenue(content, os.getenv(content.upper()))
+        await update.message.reply_text(f"{app.return_revenue()}")
+    else:
+        first = revenue.Revenue("Duo", os.getenv("DUO"))
+        second = revenue.Revenue("June", os.getenv("JUNE"))
+        await update.message.reply_text(f"{first.return_revenue()}\n{second.return_revenue()}")
 
 def main():
     dotenv.load_dotenv()

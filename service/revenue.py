@@ -3,16 +3,16 @@ from xml.dom.minidom import parse, parseString
 import dotenv
 import os
 from datetime import datetime
-
+from pytz import timezone
 
 class Revenue:
-    def __init__(self, cafe):
+    def __init__(self, cafe: str, cafe_link: str) -> None:
         self.__cafe = cafe
-        self.key_link = "https://kofeinya-duo-passazh.iiko.it:443/resto/api/auth"
+        self.key_link = f"{cafe_link}/resto/api/auth"
         self.__key = self.get_key()
-        self.department_link = "https://kofeinya-duo-passazh.iiko.it:443/resto/api/corporation/departments"
+        self.department_link = f"{cafe_link}/resto/api/corporation/departments"
         self.__department = self.get_department()
-        self.sales_link = "https://kofeinya-duo-passazh.iiko.it:443/resto/api/reports/sales"
+        self.sales_link = f"{cafe_link}/resto/api/reports/sales"
         self.__sales = self.get_sales()
 
     def get_key(self) -> str:
@@ -34,8 +34,9 @@ class Revenue:
 
 
     def get_sales(self) -> str:
-        time = (datetime.now()).strftime("%d.%m.%Y")
-        now = (datetime.now()).strftime("%H:%M")
+        time_zone = 'Asia/Yekaterinburg'
+        time = (datetime.now(timezone(time_zone))).strftime("%d.%m.%Y")
+        now = (datetime.now(timezone(time_zone))).strftime("%H:%M")
 
         param = {
             "key": self.__key,
