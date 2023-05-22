@@ -61,7 +61,7 @@ class Now:
         data = {
             "revenue": revenue_sum,
             "check_count": check_count,
-            "average_check": revenue_sum / check_count
+            "average_check": revenue_sum / check_count if check_count != 0 : 0
         }
 
         return data
