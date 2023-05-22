@@ -74,7 +74,7 @@ class Now:
         else:
             today: json = self.get_sales_info(1)
             week_ago: json = self.get_sales_info(8)
-        if today and week_ago:
+        if today and week_ago and week_ago["revenue"] != 0:
             lfl_coeff = (today["revenue"] - week_ago["revenue"]) / week_ago["revenue"] * 100
             return f"{self.__cafe}: {today['revenue']:.1f}₽. Чеков: {today['check_count']}. Ср.чек {today['average_check']:.1f}₽. LfL: {lfl_coeff:.2f}%"
         else:
