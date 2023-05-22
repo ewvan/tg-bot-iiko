@@ -57,7 +57,7 @@ class Now:
         check_count = len(xml_response)
         revenue_sum = sum([float(_.getElementsByTagName('value')[0].firstChild.nodeValue) for _ in xml_response])
 
-        print(check_count)
+        print(xml_response)
         data = {
             "revenue": revenue_sum,
             "check_count": check_count,
