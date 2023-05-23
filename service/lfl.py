@@ -6,7 +6,7 @@ import datetime
 from pytz import timezone
 import json
 
-class Now:
+class Lfl:
     def __init__(self, cafe: str, cafe_link: str, yesterday:bool = False) -> None:
         self.yesterday = yesterday
         self.__cafe = cafe
@@ -58,8 +58,6 @@ class Now:
         revenue_sum = sum([float(_.getElementsByTagName('value')[0].firstChild.nodeValue) for _ in xml_response])
         data = {
             "revenue": revenue_sum,
-            "check_count": check_count,
-            "average_check": revenue_sum / check_count if check_count != 0 else 0
         }
 
         return data
@@ -74,7 +72,7 @@ class Now:
             week_ago: json = self.get_sales_info(8)
         if today and week_ago and week_ago["revenue"] != 0:
             lfl_coeff = (today["revenue"] - week_ago["revenue"]) / week_ago["revenue"] * 100
-            return f"<u>{self.__cafe}</u>\n<b>Выручка:</b> {'{0:,}'.format(int(today['revenue'])).replace(',', ' ')}₽\n<b>Чеков:</b> {today['check_count']}\n<b>Ср.чек:</b> {'{0:,}'.format(int(today['average_check'])).replace(',', ' ')}₽\n"
+            return f"<u>{self.__cafe}</u>\n<b>Like for Like:</b> {'+' if lfl_coeff > 0 else ''}{lfl_coeff:.2f}%\n"
 
         else:
             return f"По <u>{self.__cafe}</u> нет данных"

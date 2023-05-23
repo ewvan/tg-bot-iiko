@@ -51,9 +51,9 @@ class Products:
                             output_data[account]['count'] += 1
 
         if len(output_data) > 0:
-            result = f"{self.__cafe}: \n"
+            result = f"<u>{self.__cafe}:</u> \n"
             for a,b in output_data.items():
-                result += f"Информация о списаниях за вчера по счету {a} в количестве {int(b['count'])} на сумму {float(b['cost']):.1f}₽\n"
+                result += f"Информация о списаниях за вчера по счету <b>{a}</b> в количестве <b>{int(b['count'])}</b> на сумму <b>{'{0:,}'.format(int(b['cost']))}₽</b>\n"
 
             return result
         else:
