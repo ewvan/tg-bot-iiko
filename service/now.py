@@ -46,8 +46,8 @@ class Now:
             "department": self.__department,
             "dateFrom": time,
             "dateTo": time,
-            "hourTo": now[0:2],
-            "hourFrom": "0",
+            "hourTo": now[0:2] if not self.yesterday else -1,
+            "hourFrom": "0" if not self.yesterday else -1,
             "dishDetails": True
         }
 
