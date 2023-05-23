@@ -39,7 +39,7 @@ class Discount:
         xml_response = parseString(response.text)
         discount_sum = int(sum([float(i.getElementsByTagName('DiscountSum')[0].firstChild.nodeValue) for i in (xml_response.getElementsByTagName('r')) if i.getElementsByTagName('OrderDiscount.Type')[0].firstChild is not None and '2' in i.getElementsByTagName('OrderDiscount.Type')[0].firstChild.nodeValue]))
 
-        return f"<u>{self.__cafe}</u>\nСебестоимоcть скидки <b>Угостили за вчера</b> составляет {'{0:,}'.format(discount_sum).replace(',', ' ')}₽\n"
+        return f"<u>{self.__cafe}</u>\n<b>Угостили за вчера:</b>\n{'{0:,}'.format(discount_sum).replace(',', ' ')}₽\n"
 
     def return_discount(self):
         return self.__discount_sum
