@@ -29,15 +29,17 @@ class Discount:
             "key": self.__key,
             "report": "SALES",
             "agr": "DiscountSum",
+            "groupCol": "OrderDiscount.Type",
             "from": date,
             "to": date
         }
 
         response = requests.get(self.discount_link,params=param)
         assert (response.status_code == 200)
+        xml_response = parseString(response.text)
+        discount_sum = sum([float(i.getElementsByTagName('DiscountSum')[0].firstChild.nodeValue) for i in (xml_response.getElementsByTagName('r')) if i.getElementsByTagName('OrderDiscount.Type')[0].firstChild is not None and '2' in i.getElementsByTagName('OrderDiscount.Type')[0].firstChild.nodeValue])
 
-        value = float(parseString(response.text).getElementsByTagName('DiscountSum')[0].firstChild.nodeValue)
-        return f"Себестоимость скидки за вчера в {self.__cafe} составляет {value:.1f}₽"
+        return f"Себестоимоcть скидки 'Угостили за вчера' в {self.__cafe} составляет {discount_sum:.1f}₽"
 
     def return_discount(self):
         return self.__discount_sum
