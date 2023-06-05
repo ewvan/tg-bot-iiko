@@ -1,0 +1,31 @@
+{
+  "DUO": {
+    "link" : "https://kofeinya-duo-passazh.iiko.it:443",
+    "name": "Пассаж"
+  },
+  "JUNE": {
+    "link": "https://june.iiko.it:443",
+    "name": "JUNE"
+  },
+  "ZAYA": {
+    "link": "https://zaya.iiko.it:443",
+    "name": "Зая"
+  },
+  "BISTRO": {
+    "link": "https://bistro-duo.iiko.it:443",
+    "name": "Бистро"
+  },
+  "MORKOVKA": {
+    "link": "https://morkovka.iiko.it:443",
+    "name": "Морковка"
+  },
+  "VYSCKII": {
+    "link": "https://vysockii.iiko.it:443",
+    "name": "Высоцкий"
+  },
+  "OSNOVA": {
+    "link": "https://osnova.iiko.it:443",
+    "name": "Основа"
+  }
+}
+ы

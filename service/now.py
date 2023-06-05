@@ -32,7 +32,11 @@ class Now:
 
         xml_text = parseString(response.text)
         document = xml_text.getElementsByTagName("corporateItemDto")
-        return [i.getElementsByTagName("id")[0].firstChild.nodeValue for i in document if (self.__cafe in i.getElementsByTagName("name")[0].firstChild.nodeValue and i.getElementsByTagName("type")[0].firstChild.nodeValue == "DEPARTMENT")][0]
+        print(os.getenv((self.__cafe + "_RU").upper()))
+        for i in document:
+            print(i.getElementsByTagName("name")[0].firstChild.nodeValue)
+
+        return [i.getElementsByTagName("id")[0].firstChild.nodeValue for i in document if (os.getenv((self.__cafe + "_RU").upper()) in i.getElementsByTagName("name")[0].firstChild.nodeValue and i.getElementsByTagName("type")[0].firstChild.nodeValue == "DEPARTMENT")][0]
 
     def get_sales_info(self, latency: int = 0) -> json:
         time_zone = 'Asia/Yekaterinburg'
