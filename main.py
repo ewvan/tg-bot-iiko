@@ -4,11 +4,10 @@ from telegram.ext import Application,CommandHandler
 import dotenv
 import os
 from service import now,discount, products, lfl
-
+from get_parameters import get_parameters
 
 def get_token():
     return os.getenv("TOKEN_TG")
-
 
 async def start_callback(update, context):
     await update.message.reply_text("Приветствую тебя, дорогой друг, у тебя есть такие команды, как /now [cafe], /yesterday [cafe], /products [cafe], /discount [cafe]")
@@ -16,54 +15,82 @@ async def start_callback(update, context):
 
 async def now_callback(update, context):
     if len(context.args) > 0:
-        content = (context.args[-1].strip()).capitalize()
-        app = now.Now(content, os.getenv(content.upper()))
+        content = (context.args[-1].strip()).upper()
+        cafe_parameters = get_parameters(content)
+        app = now.Now(cafe_parameters["name"], cafe_parameters["link"])
         await update.message.reply_text(f"{app.return_revenue()}",parse_mode=ParseMode.HTML)
     else:
-        first = now.Now("Duo", os.getenv("DUO"))
-        second = now.Now("June", os.getenv("JUNE"))
-        await update.message.reply_text(f"{first.return_revenue()}\n{second.return_revenue()}",parse_mode=ParseMode.HTML)
+        cafe_parameters = get_parameters()
+        result = ""
+        for cafe, data in cafe_parameters.items():
+            app = now.Now(data["name"],data["link"])
+            result += app.return_revenue() + '\n'
+            del app
+        await update.message.reply_text(result,parse_mode=ParseMode.HTML)
 
 
 async def yesterday_callback(update, context):
     if len(context.args) > 0:
-        content = (context.args[-1].strip()).capitalize()
-        app = now.Now(content, os.getenv(content.upper()), True)
-        await update.message.reply_text(f"{app.return_revenue()}",parse_mode=ParseMode.HTML)
+        content = (context.args[-1].strip()).upper()
+        cafe_parameters = get_parameters(content)
+        app = now.Now(cafe_parameters["name"], cafe_parameters["link"], True)
+        await update.message.reply_text(f"{app.return_revenue()}", parse_mode=ParseMode.HTML)
     else:
-        first = now.Now("Duo", os.getenv("DUO"), True)
-        second = now.Now("June", os.getenv("JUNE"), True)
-        await update.message.reply_text(f"{first.return_revenue()}\n{second.return_revenue()}",parse_mode=ParseMode.HTML)
+        cafe_parameters = get_parameters()
+        result = ""
+        for cafe, data in cafe_parameters.items():
+            app = now.Now(data["name"], data["link"], True)
+            result += app.return_revenue() + '\n'
+            del app
+        await update.message.reply_text(result, parse_mode=ParseMode.HTML)
 
 async def discount_callback(update, context):
     if len(context.args) > 0:
-        content = (context.args[-1].strip()).capitalize()
-        app = discount.Discount(content, os.getenv(content.upper()))
-        await update.message.reply_text(f"{app.return_discount()}",parse_mode=ParseMode.HTML)
+        content = (context.args[-1].strip()).upper()
+        cafe_parameters = get_parameters(content)
+        app = discount.Discount(cafe_parameters["name"], cafe_parameters["link"])
+        await update.message.reply_text(f"{app.return_discount()}", parse_mode=ParseMode.HTML)
     else:
-        first = discount.Discount("Duo", os.getenv("DUO"))
-        second = discount.Discount("June", os.getenv("JUNE"))
-        await update.message.reply_text(f"{first.return_discount()}\n{second.return_discount()}",parse_mode=ParseMode.HTML)
+        cafe_parameters = get_parameters()
+        result = ""
+        for cafe, data in cafe_parameters.items():
+            app = discount.Discount(data["name"], data["link"])
+            result += app.return_discount() + '\n'
+            del app
+        await update.message.reply_text(result, parse_mode=ParseMode.HTML)
+
 
 async def lfl_callback(update, context):
     if len(context.args) > 0:
-        content = (context.args[-1].strip()).capitalize()
-        app = lfl.Lfl(content, os.getenv(content.upper()))
-        await update.message.reply_text(f"{app.return_revenue()}",parse_mode=ParseMode.HTML)
+        content = (context.args[-1].strip()).upper()
+        cafe_parameters = get_parameters(content)
+        app = lfl.Lfl(cafe_parameters["name"], cafe_parameters["link"])
+        await update.message.reply_text(f"{app.return_revenue()}", parse_mode=ParseMode.HTML)
     else:
-        first = lfl.Lfl("Duo", os.getenv("DUO"))
-        second = lfl.Lfl("June", os.getenv("JUNE"))
-        await update.message.reply_text(f"{first.return_revenue()}\n{second.return_revenue()}",parse_mode=ParseMode.HTML)
+        cafe_parameters = get_parameters()
+        result = ""
+        for cafe, data in cafe_parameters.items():
+            app = lfl.Lfl(data["name"], data["link"])
+            result += app.return_revenue() + '\n'
+            del app
+        await update.message.reply_text(result, parse_mode=ParseMode.HTML)
 
 async def products_callback(update, context):
+
     if len(context.args) > 0:
-        content = (context.args[-1].strip()).capitalize()
-        app = products.Products(content, os.getenv(content.upper()))
-        await update.message.reply_text(f"{app.return_products()}",parse_mode=ParseMode.HTML)
+        content = (context.args[-1].strip()).upper()
+        cafe_parameters = get_parameters(content)
+        app = products.Products(cafe_parameters["name"], cafe_parameters["link"])
+        await update.message.reply_text(f"{app.return_products()}", parse_mode=ParseMode.HTML)
     else:
-        first = products.Products("Duo", os.getenv("DUO"))
-        second = products.Products("June", os.getenv("JUNE"))
-        await update.message.reply_text(f"{first.return_products()}\n{second.return_products()}",parse_mode=ParseMode.HTML)
+        cafe_parameters = get_parameters()
+        result = ""
+        for cafe, data in cafe_parameters.items():
+            app = products.Products(data["name"], data["link"])
+            result += app.return_products() + '\n'
+            del app
+        await update.message.reply_text(result, parse_mode=ParseMode.HTML)
+
 def main():
     dotenv.load_dotenv()
     application = Application.builder().token(get_token()).build()

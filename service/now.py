@@ -32,11 +32,8 @@ class Now:
 
         xml_text = parseString(response.text)
         document = xml_text.getElementsByTagName("corporateItemDto")
-        print(os.getenv((self.__cafe + "_RU").upper()))
-        for i in document:
-            print(i.getElementsByTagName("name")[0].firstChild.nodeValue)
 
-        return [i.getElementsByTagName("id")[0].firstChild.nodeValue for i in document if (os.getenv((self.__cafe + "_RU").upper()) in i.getElementsByTagName("name")[0].firstChild.nodeValue and i.getElementsByTagName("type")[0].firstChild.nodeValue == "DEPARTMENT")][0]
+        return [i.getElementsByTagName("id")[0].firstChild.nodeValue for i in document if (self.__cafe in i.getElementsByTagName("name")[0].firstChild.nodeValue and i.getElementsByTagName("type")[0].firstChild.nodeValue == "DEPARTMENT")][0]
 
     def get_sales_info(self, latency: int = 0) -> json:
         time_zone = 'Asia/Yekaterinburg'
@@ -56,6 +53,7 @@ class Now:
         }
 
         response = requests.get(self.sales_link, params=param)
+
         assert (response.status_code == 200)
         xml_response = parseString(response.text).getElementsByTagName('dayDishValue')
         check_count = len(xml_response)
@@ -65,7 +63,6 @@ class Now:
             "check_count": check_count,
             "average_check": revenue_sum / check_count if check_count != 0 else 0
         }
-
         return data
 
 
@@ -76,8 +73,8 @@ class Now:
         else:
             today: json = self.get_sales_info(1)
             week_ago: json = self.get_sales_info(8)
-        if today and week_ago and week_ago["revenue"] != 0:
-            lfl_coeff = (today["revenue"] - week_ago["revenue"]) / week_ago["revenue"] * 100
+
+        if today and week_ago:
             return f"<u>{self.__cafe}</u>\n<b>Выручка:</b> {'{0:,}'.format(int(today['revenue'])).replace(',', ' ')}₽\n<b>Чеков:</b> {today['check_count']}\n<b>Ср.чек:</b> {'{0:,}'.format(int(today['average_check'])).replace(',', ' ')}₽\n"
 
         else:
